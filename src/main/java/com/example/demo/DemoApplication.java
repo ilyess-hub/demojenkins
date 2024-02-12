@@ -14,12 +14,12 @@ public class DemoApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 
-		logger.info("its ci job");
+		logger.info("NEW");
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-       logger.info("its my second logger");
+       logger.info("NEW");
 	}
 }
