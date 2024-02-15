@@ -18,7 +18,6 @@ script {
         stage("build"){
                 steps{
 script {
-  //gv.function name
   gv.buildApp()
 }                      }
                   }
@@ -30,15 +29,17 @@ script {
          }
        }
                 steps{
-                    echo 'testing'
-                      }
+script {
+  gv.testApp()
+}                         }
                   }
 
      stage("deploy"){
 
                 steps{
-                    echo 'deploying'
-                  echo "deploying version ${params.VERSION}"
+                    script {
+  gv.deployApp()
+}   
                       }
                   }
     
