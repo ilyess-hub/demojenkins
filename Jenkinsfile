@@ -38,7 +38,7 @@ script {
 
        input {
          message "Select the env to deploy to "
-         ok "env selecte Done"
+         ok "Done"
          parameters {
                choice(name: 'ENV', choices: ['dev', 'staging','prod'], description: '')
          }
