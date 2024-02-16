@@ -1,49 +1,49 @@
-
-def gv
 pipeline{
+
   agent any
-  parameters {
-    choice(name: 'VERSION', choices: ['1.1.0', '1.2.0','1.3.0'], description: '')
-    booleanParam(name: 'executeTests',defaultValue: true,  description: '')
+  tools {
+   maven 'maven-3.96'
+    
   }
 
   stages {
+        stage("build jar"){
 
-            stage("init"){
                 steps{
-script {
-  gv = load "script.groovy"
-}                      }
-                  }
-        stage("build"){
-                steps{
-script {
-  gv.buildApp()
-}                      }
+                      script {
+                        echo "building jar"
+                        sh 'mvn package'
+                      }
+    
+                      }
                   }
 
-     stage("test"){
-       when {
-         expression {
-           params.executeTests == true
-         }
-       }
+
+            stage("build image"){
+
                 steps{
-script {
-  gv.testApp()
-}                         }
+                      script {
+                    echo "building image"
+                         withCredentials([
+                      usernamePassword(credentials: 'docker-hub-repo',usernameVariable: USER, passwordVariable: PWD)
+                      ]) {
+
+                           sh 'docker build -t ilyes10/my-repo:3.0 .'
+                           sh "echo $PWD | docker login -u $USER --password-stdin"
+                           sh 'docker push ilyes10/my-repo:3.0'
+                      }
+                      }
+    
+                      }
                   }
 
-     stage("deploy"){
+
+            stage("deploy"){
+
                 steps{
                     script {
-env.ENV = input message: "Select the env to deploy to ", ok: "Done", parameters: [choice(name: 'ONE',
-                                      choices: ['dev', 'staging','prod'], description: '')]
-                      
-  gv.deployApp()
-  echo "deploying to ${ENV}"
-
-}   
+                      echo "deploy"
+                    }
                       }
                   }
     
