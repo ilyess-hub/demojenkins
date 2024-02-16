@@ -25,7 +25,7 @@ pipeline{
                       script {
                     echo "building image"
                          withCredentials([
-                      usernamePassword(credentials: 'docker-hub-repo',usernameVariable: 'USER', passwordVariable: 'PWD')
+                      usernamePassword(credentialsId: 'docker-hub-repo',usernameVariable: 'USER', passwordVariable: 'PWD')
                       ]) {
 
                            sh 'docker build -t ilyes10/my-repo:3.0 .'
